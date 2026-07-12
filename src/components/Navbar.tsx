@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import NavLink from "./NavLink";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@heroui/react";
-import { LuChevronDown, LuMenu, LuX, LuUser, LuLogOut, LuShare2, LuList, LuInbox } from "react-icons/lu";
+import { LuChevronDown, LuMenu, LuX, LuLogOut, LuShare2, LuList, LuInbox } from "react-icons/lu";
 
 interface ProfileAvatarProps {
   src?: string | null;
@@ -21,7 +21,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ src, name, sizeClassName 
 
   return (
     <span
-      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 ring-1 ring-slate-200 shadow-sm ${sizeClassName}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 ring-1 ring-slate-200/80 shadow-xs ${sizeClassName}`}
     >
       {imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -32,7 +32,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ src, name, sizeClassName 
           className="h-full w-full rounded-full object-cover"
         />
       ) : (
-        <span className="flex h-full w-full items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-700">
+        <span className="flex h-full w-full items-center justify-center rounded-full bg-amber-50 text-xs font-bold text-amber-700">
           {initial}
         </span>
       )}
@@ -96,7 +96,6 @@ const Navbar: React.FC = () => {
     router.replace("/login");
   };
 
-  // Navigation links configuration
   const navLinks = [
     { title: "Home", href: "/" },
     { title: "All Foods", href: "/all-foods" },
@@ -106,14 +105,12 @@ const Navbar: React.FC = () => {
     { title: "Privacy Policy", href: "/privacy-policy" },
   ];
 
-  // Mobile only links (additional links for mobile menu)
   const mobileLinks = user ? [
     { title: "Share Food", href: "/share-food", icon: LuShare2 },
     { title: "My Shared Foods", href: "/my-shared-foods", icon: LuList },
     { title: "My Requests", href: "/my-requests", icon: LuInbox },
   ] : [];
 
-  // Helper function to check if link is active (same as desktop NavLink)
   const isActiveLink = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -122,33 +119,33 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/85 backdrop-blur-xl shadow-xs">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-4 py-3">
         
-        {/* Logo */}
+        {/* Logo Section */}
         <Link
           href="/"
-          className="flex items-center gap-2 shrink-0 group"
+          className="flex items-center gap-2.5 shrink-0 group"
         >
           <div className="relative">
             <Image
-              src="/assets/Logo.png"
+              src="/assets/logo11.png"
               alt="logo"
-              width={40}
-              height={40}
+              width={42}
+              height={42}
               priority
               className="rounded-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
-            <div className="absolute inset-0 rounded-full ring-2 ring-emerald-500/20 group-hover:ring-emerald-500/40 transition-all duration-300"></div>
+            <div className="absolute inset-0 rounded-full ring-2 ring-emerald-600/10 group-hover:ring-amber-500/30 transition-all duration-300"></div>
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-black tracking-tight bg-linear-to-r from-slate-900 via-emerald-700 to-lime-500 bg-clip-text text-transparent">
-            Share<span className="text-lime-500">Bite</span>
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight bg-gradient-to-r from-slate-800 via-emerald-700 to-amber-600 bg-clip-text text-transparent">
+            Share<span className="text-amber-500 group-hover:text-amber-600 transition-colors duration-300">Bite</span>
           </h1>
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden lg:flex items-center gap-7 text-sm font-semibold">
+        <ul className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600">
           {navLinks.map((link) => (
             <li key={link.href}>
               <NavLink href={link.href}>{link.title}</NavLink>
@@ -165,7 +162,7 @@ const Navbar: React.FC = () => {
               <Link href="/login">
                 <Button
                   size="sm"
-                  className="rounded-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+                  className="rounded-full bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-amber-500 hover:to-amber-600 text-white px-6 font-semibold shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02]"
                 >
                   Login
                 </Button>
@@ -175,13 +172,11 @@ const Navbar: React.FC = () => {
                 
                 {/* Profile Button */}
                 <button
-                  onClick={() =>
-                    setProfileMenuOpen((prev) => !prev)
-                  }
-                  className={`flex items-center gap-2 rounded-xl border bg-white px-3 py-2 shadow-sm transition-all duration-300 ${
+                  onClick={() => setProfileMenuOpen((prev) => !prev)}
+                  className={`flex items-center gap-2 rounded-xl border bg-white px-3 py-2 shadow-xs transition-all duration-300 ${
                     profileMenuOpen
-                      ? "border-emerald-400 bg-emerald-50/50 shadow-md"
-                      : "border-slate-200 hover:border-emerald-200 hover:bg-emerald-50/50"
+                      ? "border-amber-500 bg-amber-50/40 shadow-xs"
+                      : "border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/30"
                   }`}
                 >
                   <ProfileAvatar src={user?.image} name={user?.name} sizeClassName="w-8 h-8" />
@@ -192,33 +187,32 @@ const Navbar: React.FC = () => {
 
                   <LuChevronDown
                     size={16}
-                    className={`text-slate-500 transition-all duration-300 ${
-                      profileMenuOpen ? "rotate-180 text-emerald-600" : ""
+                    className={`text-slate-400 transition-all duration-300 ${
+                      profileMenuOpen ? "rotate-180 text-amber-600" : "group-hover:text-emerald-600"
                     }`}
                   />
                 </button>
 
-                {/* Dropdown - Improved */}
+                {/* Dropdown Menu */}
                 <div
-                  className={`absolute right-0 top-[115%] w-72 rounded-2xl border border-slate-100 bg-white p-1.5 shadow-[0_20px_60px_rgba(0,0,0,0.12)] transition-all duration-300 ${
+                  className={`absolute right-0 top-[120%] w-72 rounded-2xl border border-slate-100 bg-white p-1.5 shadow-xl transition-all duration-300 ${
                     profileMenuOpen
                       ? "opacity-100 visible translate-y-0 scale-100"
                       : "opacity-0 invisible -translate-y-2 scale-95"
                   }`}
                 >
                   
-                  {/* User Info - Improved */}
-                  <div className="flex items-center gap-3 rounded-xl bg-gradient-to-br from-emerald-50/80 to-slate-50/80 p-3 border border-emerald-100/30">
+                  {/* User Info Card */}
+                  <div className="flex items-center gap-3 rounded-xl bg-gradient-to-br from-emerald-50/30 via-amber-50/30 to-slate-50/40 p-3 border border-amber-100/40">
                     <div className="relative">
                       <ProfileAvatar src={user?.image} name={user?.name} sizeClassName="w-11 h-11" />
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white"></div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-amber-500 rounded-full border-2 border-white"></div>
                     </div>
 
                     <div className="min-w-0 flex-1">
                       <h4 className="truncate text-sm font-bold text-slate-800">
                         {user?.name}
                       </h4>
-
                       <p className="truncate text-xs text-slate-500">
                         {user?.email}
                       </p>
@@ -227,15 +221,23 @@ const Navbar: React.FC = () => {
 
                   <div className="h-px bg-slate-100 my-1.5"></div>
 
-                  {/* Menu Items - Improved */}
+                  {/* Dropdown Menu Items */}
                   <div className="flex flex-col gap-0.5">
                     <Link
                       href="/share-food"
                       onClick={closeMenus}
-                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-200 group"
+                      className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
+                        isActiveLink("/share-food")
+                          ? "bg-amber-100/60 text-amber-700"
+                          : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                      }`}
                     >
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-all duration-200">
-                        <LuShare2 size={16} className="text-slate-600 group-hover:text-emerald-600" />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                        isActiveLink("/share-food") 
+                          ? "bg-amber-200/60 text-amber-700" 
+                          : "bg-slate-50 group-hover:bg-emerald-100 text-slate-500 group-hover:text-emerald-700"
+                      }`}>
+                        <LuShare2 size={16} />
                       </div>
                       Share Food
                     </Link>
@@ -243,10 +245,18 @@ const Navbar: React.FC = () => {
                     <Link
                       href="/my-shared-foods"
                       onClick={closeMenus}
-                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-200 group"
+                      className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
+                        isActiveLink("/my-shared-foods")
+                          ? "bg-amber-100/60 text-amber-700"
+                          : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                      }`}
                     >
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-all duration-200">
-                        <LuList size={16} className="text-slate-600 group-hover:text-emerald-600" />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                        isActiveLink("/my-shared-foods") 
+                          ? "bg-amber-200/60 text-amber-700" 
+                          : "bg-slate-50 group-hover:bg-emerald-100 text-slate-500 group-hover:text-emerald-700"
+                      }`}>
+                        <LuList size={16} />
                       </div>
                       My Shared Foods
                     </Link>
@@ -254,15 +264,23 @@ const Navbar: React.FC = () => {
                     <Link
                       href="/my-requests"
                       onClick={closeMenus}
-                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-200 group"
+                      className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
+                        isActiveLink("/my-requests")
+                          ? "bg-amber-100/60 text-amber-700"
+                          : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
+                      }`}
                     >
-                      <div className="w-8 h-8 rounded-lg bg-slate-100 group-hover:bg-emerald-100 flex items-center justify-center transition-all duration-200">
-                        <LuInbox size={16} className="text-slate-600 group-hover:text-emerald-600" />
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                        isActiveLink("/my-requests") 
+                          ? "bg-amber-200/60 text-amber-700" 
+                          : "bg-slate-50 group-hover:bg-emerald-100 text-slate-500 group-hover:text-emerald-700"
+                      }`}>
+                        <LuInbox size={16} />
                       </div>
                       My Requests
                     </Link>
 
-                    <div className="h-px bg-slate-100 my-0.5"></div>
+                    <div className="h-px bg-slate-100 my-1"></div>
 
                     <button
                       onClick={handleSignOut}
@@ -279,20 +297,20 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden flex items-center justify-center rounded-lg p-2 hover:bg-slate-100 transition-all duration-200"
+            className="lg:hidden flex items-center justify-center rounded-lg p-2 hover:bg-emerald-50 transition-all duration-200"
           >
             {menuOpen ? (
-              <LuX size={26} className="text-emerald-600" />
+              <LuX size={26} className="text-amber-600" />
             ) : (
-              <LuMenu size={26} className="text-emerald-600" />
+              <LuMenu size={26} className="text-emerald-700" />
             )}
           </button>
         </div>
 
-        {/* Mobile Menu - Improved */}
+        {/* Mobile Sidebar Menu */}
         <div
           className={`absolute right-4 top-20 w-[92vw] max-w-sm rounded-3xl border border-slate-100 bg-white/95 backdrop-blur-xl shadow-2xl transition-all duration-300 lg:hidden ${
             menuOpen
@@ -302,19 +320,18 @@ const Navbar: React.FC = () => {
         >
           <div className="p-4">
 
-            {/* User Info - Improved */}
+            {/* User Details in Mobile Menu */}
             {user && (
-              <div className="mb-4 flex items-center gap-3 rounded-2xl bg-gradient-to-br from-emerald-50/80 to-slate-50/80 p-3 border border-emerald-100/30">
+              <div className="mb-4 flex items-center gap-3 rounded-2xl bg-gradient-to-br from-emerald-50/40 via-amber-50/40 to-slate-50/50 p-3 border border-amber-100/30">
                 <div className="relative">
                   <ProfileAvatar src={user?.image} name={user?.name} sizeClassName="w-10 h-10" />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white"></div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-amber-500 rounded-full border-2 border-white"></div>
                 </div>
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold text-slate-800">
                     {user?.name}
                   </p>
-
                   <p className="truncate text-xs text-slate-500">
                     {user?.email}
                   </p>
@@ -322,7 +339,7 @@ const Navbar: React.FC = () => {
               </div>
             )}
 
-            {/* Main Navigation Links with Active State - Improved */}
+            {/* Navigation Links List */}
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => {
                 const isActive = isActiveLink(link.href);
@@ -333,8 +350,8 @@ const Navbar: React.FC = () => {
                     onClick={closeMenus}
                     className={`w-full text-center rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-emerald-50 text-emerald-600 shadow-sm"
-                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                        ? "bg-amber-100/60 text-amber-700 shadow-xs"
+                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
                     }`}
                   >
                     {link.title}
@@ -342,7 +359,7 @@ const Navbar: React.FC = () => {
                 );
               })}
 
-              {/* User-specific mobile links with Active State - Improved */}
+              {/* Private User Actions for Mobile */}
               {user && mobileLinks.map((link) => {
                 const isActive = isActiveLink(link.href);
                 const Icon = link.icon;
@@ -353,14 +370,14 @@ const Navbar: React.FC = () => {
                     onClick={closeMenus}
                     className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-emerald-50 text-emerald-600 shadow-sm"
-                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-600"
+                        ? "bg-amber-100/60 text-amber-700 shadow-xs"
+                        : "text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"
                     }`}
                   >
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                      isActive ? "bg-emerald-100" : "bg-slate-100 group-hover:bg-emerald-100"
+                      isActive ? "bg-amber-200/60 text-amber-700" : "bg-slate-100 text-slate-500"
                     }`}>
-                      <Icon size={16} className={isActive ? "text-emerald-600" : "text-slate-600"} />
+                      <Icon size={16} className={isActive ? "text-amber-700" : "text-slate-500"} />
                     </div>
                     {link.title}
                   </Link>
@@ -368,13 +385,13 @@ const Navbar: React.FC = () => {
               })}
             </div>
 
-            {/* Auth */}
+            {/* Authentication Button Container */}
             <div className="mt-4">
               {!user ? (
                 <Link href="/login" onClick={closeMenus}>
                   <Button
                     fullWidth
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+                    className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-amber-500 hover:to-amber-600 text-white rounded-full font-semibold shadow-sm transition-all duration-300"
                   >
                     Login
                   </Button>
@@ -383,7 +400,7 @@ const Navbar: React.FC = () => {
                 <Button
                   fullWidth
                   onClick={handleSignOut}
-                  className="bg-rose-600 hover:bg-rose-700 text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+                  className="bg-rose-600 hover:bg-rose-700 text-white rounded-full font-semibold shadow-sm transition-all duration-300"
                 >
                   Logout
                 </Button>

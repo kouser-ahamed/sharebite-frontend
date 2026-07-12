@@ -21,7 +21,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ src, name, sizeClassName 
 
   return (
     <span
-      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 ring-1 ring-slate-200/80 shadow-xs dark:ring-slate-700 ${sizeClassName}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-white p-0.5 ring-1 ring-slate-200/80 shadow-xs dark:ring-neutral-900 ${sizeClassName}`}
     >
       {imageSrc ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -32,7 +32,7 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({ src, name, sizeClassName 
           className="h-full w-full rounded-full object-cover"
         />
       ) : (
-        <span className="flex h-full w-full items-center justify-center rounded-full bg-green-50 text-xs font-bold text-green-700 dark:bg-green-900/30 dark:text-green-400">
+        <span className="flex h-full w-full items-center justify-center rounded-full bg-green-50 text-xs font-bold text-green-700 dark:bg-neutral-900 dark:text-green-400">
           {initial}
         </span>
       )}
@@ -52,27 +52,38 @@ const Navbar: React.FC = () => {
   const userData = authClient.useSession();
   const user = userData.data?.user;
 
-  // Check initial theme
+  
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+    
+    
     if (savedTheme === "light") {
       setIsDark(false);
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove("dark", "bg-black");
+      document.documentElement.classList.add("bg-white");
+      document.documentElement.style.colorScheme = "light";
     } else {
       setIsDark(true);
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("bg-white");
+      document.documentElement.classList.add("dark", "bg-black");
+      document.documentElement.style.colorScheme = "dark";
+      localStorage.setItem("theme", "dark");
     }
   }, []);
 
-  // Toggle theme
   const toggleTheme = () => {
-    setIsDark(!isDark);
-    if (!isDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
+    if (isDark) {
+      setIsDark(false);
+      document.documentElement.classList.remove("dark", "bg-black");
+      document.documentElement.classList.add("bg-white");
+      document.documentElement.style.colorScheme = "light";
       localStorage.setItem("theme", "light");
+    } else {
+      setIsDark(true);
+      document.documentElement.classList.remove("bg-white");
+      document.documentElement.classList.add("dark", "bg-black");
+      document.documentElement.style.colorScheme = "dark";
+      localStorage.setItem("theme", "dark");
     }
   };
 
@@ -144,7 +155,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900 shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200 dark:border-neutral-900 bg-white dark:bg-black shadow-sm transition-colors duration-300">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-4 py-3">
         
         {/* Logo Section */}
@@ -170,7 +181,7 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <ul className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600 dark:text-white">
+        <ul className="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600 dark:text-neutral-200">
           {navLinks.map((link) => (
             <li key={link.href}>
               <NavLink href={link.href}>{link.title}</NavLink>
@@ -184,13 +195,13 @@ const Navbar: React.FC = () => {
           {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
-            className="hidden lg:flex items-center justify-center rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+            className="hidden lg:flex items-center justify-center rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-neutral-900 transition-all duration-200 cursor-pointer"
             aria-label="Toggle theme"
           >
             {isDark ? (
               <LuSun className="text-amber-400 text-xl" />
             ) : (
-              <LuMoon className="text-slate-600 dark:text-slate-300 text-xl" />
+              <LuMoon className="text-slate-600 dark:text-neutral-400 text-xl" />
             )}
           </button>
 
@@ -211,29 +222,29 @@ const Navbar: React.FC = () => {
                 {/* Profile Button */}
                 <button
                   onClick={() => setProfileMenuOpen((prev) => !prev)}
-                  className={`flex items-center gap-2 rounded-xl border bg-white dark:bg-slate-800 px-3 py-2 shadow-sm transition-all duration-300 ${
+                  className={`flex items-center gap-2 rounded-xl border bg-white dark:bg-black px-3 py-2 shadow-sm transition-all duration-300 cursor-pointer ${
                     profileMenuOpen
-                      ? "border-green-500 dark:border-green-400 bg-green-50/40 dark:bg-green-900/30 shadow-sm"
-                      : "border-slate-200 dark:border-slate-700 hover:border-green-500 dark:hover:border-green-400 hover:bg-green-50/20 dark:hover:bg-green-900/20"
+                      ? "border-green-500 dark:border-green-400 bg-green-50/40 dark:bg-neutral-900 shadow-sm"
+                      : "border-slate-200 dark:border-neutral-900 hover:border-green-500 dark:hover:border-green-400 hover:bg-green-50/20 dark:hover:bg-neutral-900/60"
                   }`}
                 >
                   <ProfileAvatar src={user?.image} name={user?.name} sizeClassName="w-8 h-8" />
 
-                  <span className="max-w-24 truncate text-sm font-semibold text-slate-700 dark:text-white">
+                  <span className="max-w-24 truncate text-sm font-semibold text-slate-700 dark:text-neutral-200">
                     {user?.name?.split(" ")[0]}
                   </span>
 
                   <LuChevronDown
                     size={16}
-                    className={`text-slate-400 dark:text-slate-400 transition-all duration-300 ${
+                    className={`text-slate-400 dark:text-neutral-500 transition-all duration-300 ${
                       profileMenuOpen ? "rotate-180 text-green-600 dark:text-green-400" : ""
                     }`}
                   />
                 </button>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu - Pure Dark Background */}
                 <div
-                  className={`absolute right-0 top-[120%] w-72 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-1.5 shadow-xl transition-all duration-300 ${
+                  className={`absolute right-0 top-[120%] w-72 rounded-2xl border border-slate-200 dark:border-neutral-900 bg-white dark:bg-black p-1.5 shadow-xl transition-all duration-300 ${
                     profileMenuOpen
                       ? "opacity-100 visible translate-y-0 scale-100"
                       : "opacity-0 invisible -translate-y-2 scale-95"
@@ -241,23 +252,23 @@ const Navbar: React.FC = () => {
                 >
                   
                   {/* User Info Card */}
-                  <div className="flex items-center gap-3 rounded-xl bg-green-50/30 dark:bg-green-900/20 p-3 border border-slate-200 dark:border-slate-700">
+                  <div className="flex items-center gap-3 rounded-xl bg-green-50/30 dark:bg-neutral-950 p-3 border border-slate-200 dark:border-neutral-900">
                     <div className="relative">
                       <ProfileAvatar src={user?.image} name={user?.name} sizeClassName="w-11 h-11" />
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 dark:bg-green-400 rounded-full border-2 border-white dark:border-slate-800"></div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 dark:bg-green-400 rounded-full border-2 border-white dark:border-black"></div>
                     </div>
 
                     <div className="min-w-0 flex-1">
                       <h4 className="truncate text-sm font-bold text-slate-800 dark:text-white">
                         {user?.name}
                       </h4>
-                      <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                      <p className="truncate text-xs text-slate-500 dark:text-neutral-400">
                         {user?.email}
                       </p>
                     </div>
                   </div>
 
-                  <div className="h-px bg-slate-200 dark:bg-slate-700 my-1.5"></div>
+                  <div className="h-px bg-slate-200 dark:bg-neutral-900 my-1.5"></div>
 
                   {/* Dropdown Menu Items */}
                   <div className="flex flex-col gap-0.5">
@@ -266,14 +277,14 @@ const Navbar: React.FC = () => {
                       onClick={closeMenus}
                       className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
                         isActiveLink("/share-food")
-                          ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                          : "text-slate-700 dark:text-slate-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-white"
+                          ? "bg-green-50 dark:bg-neutral-900 text-green-700 dark:text-green-400"
+                          : "text-slate-700 dark:text-neutral-300 hover:bg-green-50 dark:hover:bg-neutral-900/60 hover:text-green-700 dark:hover:text-white"
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
                         isActiveLink("/share-food") 
-                          ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-400" 
-                          : "bg-slate-100 dark:bg-slate-700 group-hover:bg-green-100 dark:group-hover:bg-green-800/40 text-slate-500 dark:text-slate-400 group-hover:text-green-700 dark:group-hover:text-white"
+                          ? "bg-green-100 dark:bg-neutral-800 text-green-700 dark:text-green-400" 
+                          : "bg-slate-100 dark:bg-neutral-900 group-hover:bg-green-100 dark:group-hover:bg-neutral-800 text-slate-500 dark:text-neutral-400 group-hover:text-green-700 dark:group-hover:text-white"
                       }`}>
                         <LuShare2 size={16} />
                       </div>
@@ -285,14 +296,14 @@ const Navbar: React.FC = () => {
                       onClick={closeMenus}
                       className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
                         isActiveLink("/my-shared-foods")
-                          ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                          : "text-slate-700 dark:text-slate-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-white"
+                          ? "bg-green-50 dark:bg-neutral-900 text-green-700 dark:text-green-400"
+                          : "text-slate-700 dark:text-neutral-300 hover:bg-green-50 dark:hover:bg-neutral-900/60 hover:text-green-700 dark:hover:text-white"
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
                         isActiveLink("/my-shared-foods") 
-                          ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-400" 
-                          : "bg-slate-100 dark:bg-slate-700 group-hover:bg-green-100 dark:group-hover:bg-green-800/40 text-slate-500 dark:text-slate-400 group-hover:text-green-700 dark:group-hover:text-white"
+                          ? "bg-green-100 dark:bg-neutral-800 text-green-700 dark:text-green-400" 
+                          : "bg-slate-100 dark:bg-neutral-900 group-hover:bg-green-100 dark:group-hover:bg-neutral-800 text-slate-500 dark:text-neutral-400 group-hover:text-green-700 dark:group-hover:text-white"
                       }`}>
                         <LuList size={16} />
                       </div>
@@ -304,27 +315,27 @@ const Navbar: React.FC = () => {
                       onClick={closeMenus}
                       className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
                         isActiveLink("/my-requests")
-                          ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400"
-                          : "text-slate-700 dark:text-slate-300 hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-white"
+                          ? "bg-green-50 dark:bg-neutral-900 text-green-700 dark:text-green-400"
+                          : "text-slate-700 dark:text-neutral-300 hover:bg-green-50 dark:hover:bg-neutral-900/60 hover:text-green-700 dark:hover:text-white"
                       }`}
                     >
                       <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
                         isActiveLink("/my-requests") 
-                          ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-400" 
-                          : "bg-slate-100 dark:bg-slate-700 group-hover:bg-green-100 dark:group-hover:bg-green-800/40 text-slate-500 dark:text-slate-400 group-hover:text-green-700 dark:group-hover:text-white"
+                          ? "bg-green-100 dark:bg-neutral-800 text-green-700 dark:text-green-400" 
+                          : "bg-slate-100 dark:bg-neutral-900 group-hover:bg-green-100 dark:group-hover:bg-neutral-800 text-slate-500 dark:text-neutral-400 group-hover:text-green-700 dark:group-hover:text-white"
                       }`}>
                         <LuInbox size={16} />
                       </div>
                       My Requests
                     </Link>
 
-                    <div className="h-px bg-slate-200 dark:bg-slate-700 my-1"></div>
+                    <div className="h-px bg-slate-200 dark:bg-neutral-900 my-1"></div>
 
                     <button
                       onClick={handleSignOut}
-                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 group"
+                      className="flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-200 group cursor-pointer"
                     >
-                      <div className="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/30 group-hover:bg-red-100 dark:group-hover:bg-red-800/40 flex items-center justify-center transition-all duration-200">
+                      <div className="w-8 h-8 rounded-lg bg-red-50 dark:bg-neutral-900 group-hover:bg-red-100 dark:group-hover:bg-neutral-800 flex items-center justify-center transition-all duration-200">
                         <LuLogOut size={16} className="text-red-500 dark:text-red-400" />
                       </div>
                       Logout
@@ -338,7 +349,7 @@ const Navbar: React.FC = () => {
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden flex items-center justify-center rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+            className="lg:hidden flex items-center justify-center rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-neutral-900 transition-all duration-200 cursor-pointer"
           >
             {menuOpen ? (
               <LuX size={26} className="text-green-600 dark:text-green-400" />
@@ -348,9 +359,9 @@ const Navbar: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile Sidebar Menu */}
+        {/* Mobile Sidebar Menu - Pure Dark */}
         <div
-          className={`absolute right-4 top-20 w-[92vw] max-w-sm rounded-3xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900 shadow-2xl transition-all duration-300 lg:hidden ${
+          className={`absolute right-4 top-20 w-[92vw] max-w-sm rounded-3xl border border-slate-200 dark:border-neutral-900 bg-white/95 dark:bg-black shadow-2xl transition-all duration-300 lg:hidden ${
             menuOpen
               ? "visible opacity-100 translate-y-0 scale-100"
               : "invisible opacity-0 -translate-y-3 scale-95"
@@ -360,17 +371,17 @@ const Navbar: React.FC = () => {
 
             {/* User Details in Mobile Menu */}
             {user && (
-              <div className="mb-4 flex items-center gap-3 rounded-2xl bg-green-50/30 dark:bg-green-900/20 p-3 border border-slate-200 dark:border-slate-700">
+              <div className="mb-4 flex items-center gap-3 rounded-2xl bg-green-50/30 dark:bg-neutral-950 p-3 border border-slate-200 dark:border-neutral-900">
                 <div className="relative">
                   <ProfileAvatar src={user?.image} name={user?.name} sizeClassName="w-10 h-10" />
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 dark:bg-green-400 rounded-full border-2 border-white dark:border-slate-800"></div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 dark:bg-green-400 rounded-full border-2 border-white dark:border-black"></div>
                 </div>
 
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-bold text-slate-800 dark:text-white">
                     {user?.name}
                   </p>
-                  <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                  <p className="truncate text-xs text-slate-500 dark:text-neutral-400">
                     {user?.email}
                   </p>
                 </div>
@@ -388,8 +399,8 @@ const Navbar: React.FC = () => {
                     onClick={closeMenus}
                     className={`w-full text-center rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 shadow-sm"
-                        : "text-slate-700 dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-green-400"
+                        ? "bg-green-50 dark:bg-neutral-900 text-green-700 dark:text-green-400 shadow-sm"
+                        : "text-slate-700 dark:text-neutral-200 hover:bg-green-50 dark:hover:bg-neutral-900/60 hover:text-green-700 dark:hover:text-green-400"
                     }`}
                   >
                     {link.title}
@@ -408,12 +419,12 @@ const Navbar: React.FC = () => {
                     onClick={closeMenus}
                     className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       isActive
-                        ? "bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 shadow-sm"
-                        : "text-slate-700 dark:text-white hover:bg-green-50 dark:hover:bg-green-900/20 hover:text-green-700 dark:hover:text-green-400"
+                        ? "bg-green-50 dark:bg-neutral-900 text-green-700 dark:text-green-400 shadow-sm"
+                        : "text-slate-700 dark:text-neutral-200 hover:bg-green-50 dark:hover:bg-neutral-900/60 hover:text-green-700 dark:hover:text-green-400"
                     }`}
                   >
                     <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                      isActive ? "bg-green-100 dark:bg-green-800/40 text-green-700 dark:text-green-400" : "bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400"
+                      isActive ? "bg-green-100 dark:bg-neutral-800 text-green-700 dark:text-green-400" : "bg-slate-100 dark:bg-neutral-900 text-slate-500 dark:text-slate-400"
                     }`}>
                       <Icon size={16} className={isActive ? "text-green-700 dark:text-green-400" : "text-slate-500 dark:text-slate-400"} />
                     </div>
@@ -426,7 +437,7 @@ const Navbar: React.FC = () => {
             {/* Theme Toggle for Mobile */}
             <button
               onClick={toggleTheme}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 dark:text-neutral-200 hover:bg-slate-100 dark:hover:bg-neutral-900 transition-all duration-200 cursor-pointer"
             >
               {isDark ? (
                 <>
@@ -435,7 +446,7 @@ const Navbar: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <LuMoon className="text-slate-600 dark:text-slate-300 text-xl" />
+                  <LuMoon className="text-slate-600 dark:text-neutral-400 text-xl" />
                   Dark Mode
                 </>
               )}

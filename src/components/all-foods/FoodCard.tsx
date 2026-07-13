@@ -144,8 +144,8 @@ const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
         </div>
 
         <Link
-          href={`/food-details/${food._id}`}
-          className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-xl bg-linear-to-r from-emerald-600 via-emerald-500 to-lime-500 text-sm font-bold text-white shadow-md shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/25 active:translate-y-0"
+          href={`/all-foods/${food._id}`}
+          className="mt-5 inline-flex h-11 w-full items-center justify-center rounded-xl bg-linear-to-r from-emerald-600 to-emerald-500  text-sm font-bold text-white shadow-md shadow-emerald-500/20 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-emerald-500/25 active:translate-y-0"
         >
           View Details
         </Link>

@@ -1,11 +1,7 @@
-import React from 'react';
+import MyRequestsClient from "@/components/my-requests/MyRequestsClient";
 
 const MyRequestsPage = () => {
-    return (
-        <div>
-            My Requests Page
-        </div>
-    );
+  return <MyRequestsClient />;
 };
 
 export default MyRequestsPage;

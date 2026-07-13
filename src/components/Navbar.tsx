@@ -145,6 +145,7 @@ const Navbar: React.FC = () => {
     { title: "Share Food", href: "/share-food", icon: LuShare2 },
     { title: "My Shared Foods", href: "/my-shared-foods", icon: LuList },
     { title: "My Requests", href: "/my-requests", icon: LuInbox },
+    { title: "Incoming Food Requests", href: "/incoming-food-requests", icon: LuInbox },
   ] : [];
 
   const isActiveLink = (href: string) => {
@@ -328,6 +329,26 @@ const Navbar: React.FC = () => {
                       </div>
                       My Requests
                     </Link>
+                    <Link
+                      href="/incoming-food-requests"
+                      onClick={closeMenus}
+                      className={`flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 group ${
+                        isActiveLink("/incoming-food-requests")
+                          ? "bg-green-50 dark:bg-neutral-900 text-green-700 dark:text-green-400"
+                          : "text-slate-700 dark:text-neutral-300 hover:bg-green-50 dark:hover:bg-neutral-900/60 hover:text-green-700 dark:hover:text-white"
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                        isActiveLink("/incoming-food-requests") 
+                          ? "bg-green-100 dark:bg-neutral-800 text-green-700 dark:text-green-400" 
+                          : "bg-slate-100 dark:bg-neutral-900 group-hover:bg-green-100 dark:group-hover:bg-neutral-800 text-slate-500 dark:text-neutral-400 group-hover:text-green-700 dark:group-hover:text-white"
+                      }`}>
+                        <LuInbox size={16} />
+                      </div>
+                      Incoming Food Requests
+                    </Link>
+
+                    
 
                     <div className="h-px bg-slate-200 dark:bg-neutral-900 my-1"></div>
 

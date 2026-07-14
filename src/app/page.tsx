@@ -5,6 +5,7 @@ import HowShareBiteWorks from "@/components/home/HowShareBiteWorks";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CommunityImpactStatistics from "@/components/home/CommunityImpactStatistics";
 import VolunteerSection from "@/components/home/VolunteerSection";
+import FAQSection from "@/components/home/FAQSection";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <TestimonialsSection />
       <CommunityImpactStatistics />
       <VolunteerSection />
+      <FAQSection />
     </div>
   );
 }

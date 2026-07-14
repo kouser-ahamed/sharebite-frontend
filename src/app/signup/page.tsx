@@ -73,9 +73,9 @@
 
 //   return (
 //     <div className="w-full px-4 sm:px-6 lg:px-8 mt-4 sm:mt-6 lg:mt-4 flex justify-center mb-10">
-      
+
 //       <Card className="border w-full max-w-md sm:max-w-lg py-6 sm:py-8 md:py-10 px-4 sm:px-6 rounded-xl shadow-sm">
-        
+
 //         <h1 className="text-center text-lg sm:text-2xl font-bold mb-4 bg-linear-to-r from-emerald-600 via-emerald-500 to-lime-500 bg-clip-text text-transparent">
 //           Registration Page
 //         </h1>
@@ -101,7 +101,7 @@
 //             setErrorMsg("");
 //           }}
 //         >
-          
+
 //           <TextField isRequired name="name">
 //             <Label className="text-sm sm:text-base">Name</Label>
 //             <Input placeholder="Enter your name" className="h-10 sm:h-11 text-sm" />
@@ -168,15 +168,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
 "use client";
 
 import Image from "next/image";
@@ -190,10 +181,7 @@ import {
   useState,
 } from "react";
 
-import {
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import {
   Button,
@@ -221,10 +209,7 @@ import {
 
 import { GrGoogle } from "react-icons/gr";
 
-import {
-  toast,
-  ToastContainer,
-} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -232,10 +217,7 @@ import PasswordChecklist from "@/components/PasswordChecklist";
 
 import { authClient } from "@/lib/auth-client";
 
-import {
-  buildLoginHref,
-  getSafeCallbackURL,
-} from "@/lib/auth-redirect";
+import { buildLoginHref, getSafeCallbackURL } from "@/lib/auth-redirect";
 
 const SignupPageContent = () => {
   const router = useRouter();
@@ -243,37 +225,25 @@ const SignupPageContent = () => {
 
   const session = authClient.useSession();
 
-  const callbackURL = getSafeCallbackURL(
-    searchParams.get("callbackURL"),
-  );
+  const callbackURL = getSafeCallbackURL(searchParams.get("callbackURL"));
 
   const loginHref = buildLoginHref(callbackURL);
 
-  const [password, setPassword] =
-    useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const [errorMessage, setErrorMessage] =
-    useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const [isSubmitting, setIsSubmitting] =
-    useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const [isGoogleLoading, setIsGoogleLoading] =
-    useState<boolean>(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (session.data?.user) {
       router.replace(callbackURL);
     }
-  }, [
-    callbackURL,
-    router,
-    session.data?.user,
-  ]);
+  }, [callbackURL, router, session.data?.user]);
 
-  const onSubmit = async (
-    event: FormEvent<HTMLFormElement>,
-  ) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setErrorMessage("");
@@ -281,41 +251,41 @@ const SignupPageContent = () => {
     const form = event.currentTarget;
 
     const name = (
-      form.elements.namedItem(
-        "name",
-      ) as HTMLInputElement
+      form.elements.namedItem("name") as HTMLInputElement
     ).value.trim();
 
     const image = (
-      form.elements.namedItem(
-        "image",
-      ) as HTMLInputElement
+      form.elements.namedItem("image") as HTMLInputElement
     ).value.trim();
 
     const email = (
-      form.elements.namedItem(
-        "email",
-      ) as HTMLInputElement
+      form.elements.namedItem("email") as HTMLInputElement
     ).value.trim();
 
     const passwordValue = (
-      form.elements.namedItem(
-        "password",
-      ) as HTMLInputElement
+      form.elements.namedItem("password") as HTMLInputElement
     ).value;
 
     if (name.length < 2) {
-      setErrorMessage(
-        "Please enter a valid full name.",
-      );
+      setErrorMessage("Please enter a valid full name.");
 
       return;
     }
 
     if (passwordValue.length < 8) {
-      setErrorMessage(
-        "Password must contain at least 8 characters.",
-      );
+      setErrorMessage("Password must contain at least 8 characters.");
+
+      return;
+    }
+
+    if (!/[A-Z]/.test(passwordValue)) {
+      setErrorMessage("Password must contain at least one uppercase letter.");
+
+      return;
+    }
+
+    if (!/[a-z]/.test(passwordValue)) {
+      setErrorMessage("Password must contain at least one lowercase letter.");
 
       return;
     }
@@ -323,18 +293,16 @@ const SignupPageContent = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } =
-        await authClient.signUp.email({
-          name,
-          email,
-          password: passwordValue,
-          image: image || undefined,
-        });
+      const { error } = await authClient.signUp.email({
+        name,
+        email,
+        password: passwordValue,
+        image: image || undefined,
+      });
 
       if (error) {
         setErrorMessage(
-          error.message ||
-            "Registration failed. Please try again.",
+          error.message || "Registration failed. Please try again.",
         );
 
         return;
@@ -353,31 +321,20 @@ const SignupPageContent = () => {
         // No action is needed when no active session exists.
       }
 
-      toast.success(
-        "Registration successful. Please sign in.",
-        {
-          position: "top-right",
-          autoClose: 1200,
-        },
-      );
+      toast.success("Registration successful. Please sign in.", {
+        position: "top-right",
+        autoClose: 1200,
+      });
 
       form.reset();
       setPassword("");
 
-      const loginURL = new URL(
-        loginHref,
-        window.location.origin,
-      );
+      const loginURL = new URL(loginHref, window.location.origin);
 
-      loginURL.searchParams.set(
-        "registered",
-        "1",
-      );
+      loginURL.searchParams.set("registered", "1");
 
       window.setTimeout(() => {
-        router.replace(
-          `${loginURL.pathname}${loginURL.search}`,
-        );
+        router.replace(`${loginURL.pathname}${loginURL.search}`);
       }, 700);
     } catch {
       setErrorMessage(
@@ -388,43 +345,38 @@ const SignupPageContent = () => {
     }
   };
 
-  const handleGoogleSignIn =
-    async (): Promise<void> => {
-      setErrorMessage("");
-      setIsGoogleLoading(true);
+  const handleGoogleSignIn = async (): Promise<void> => {
+    setErrorMessage("");
+    setIsGoogleLoading(true);
 
-      try {
-        const absoluteCallbackURL = new URL(
-          callbackURL,
-          window.location.origin,
-        ).toString();
+    try {
+      const absoluteCallbackURL = new URL(
+        callbackURL,
+        window.location.origin,
+      ).toString();
 
-        const { error } =
-          await authClient.signIn.social({
-            provider: "google",
-            callbackURL: absoluteCallbackURL,
-          });
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: absoluteCallbackURL,
+      });
 
-        if (error) {
-          setErrorMessage(
-            error.message ||
-              "Google registration could not be started.",
-          );
-
-          setIsGoogleLoading(false);
-        }
-      } catch {
+      if (error) {
         setErrorMessage(
-          "Google registration could not be started. Please try again.",
+          error.message || "Google registration could not be started.",
         );
 
         setIsGoogleLoading(false);
       }
-    };
+    } catch {
+      setErrorMessage(
+        "Google registration could not be started. Please try again.",
+      );
 
-  const handlePasswordChange = (
-    event: ChangeEvent<HTMLInputElement>,
-  ) => {
+      setIsGoogleLoading(false);
+    }
+  };
+
+  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
 
@@ -441,10 +393,7 @@ const SignupPageContent = () => {
           <div className="pointer-events-none absolute -bottom-28 -right-20 size-80 rounded-full bg-violet-300/15 blur-3xl" />
 
           <div className="relative">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-3"
-            >
+            <Link href="/" className="inline-flex items-center gap-3">
               <Image
                 src="/assets/logo11.png"
                 alt="ShareBite logo"
@@ -457,9 +406,7 @@ const SignupPageContent = () => {
               <div>
                 <p className="text-2xl font-black">
                   Share
-                  <span className="text-lime-300">
-                    Bite
-                  </span>
+                  <span className="text-lime-300">Bite</span>
                 </p>
 
                 <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100/70">
@@ -473,10 +420,8 @@ const SignupPageContent = () => {
             </h1>
 
             <p className="mt-5 max-w-md text-sm font-medium leading-8 text-emerald-50/80">
-              Create your ShareBite account to share
-              safe surplus food, request available
-              items and support responsible community
-              action.
+              Create your ShareBite account to share safe surplus food, request
+              available items and support responsible community action.
             </p>
 
             <div className="mt-9 space-y-5">
@@ -484,13 +429,10 @@ const SignupPageContent = () => {
                 <FiHeart className="mt-1 shrink-0 text-xl text-lime-300" />
 
                 <div>
-                  <h2 className="font-black">
-                    Make a Positive Impact
-                  </h2>
+                  <h2 className="font-black">Make a Positive Impact</h2>
 
                   <p className="mt-1 text-sm leading-6 text-emerald-50/70">
-                    Prevent suitable food from becoming
-                    waste.
+                    Prevent suitable food from becoming waste.
                   </p>
                 </div>
               </div>
@@ -499,13 +441,10 @@ const SignupPageContent = () => {
                 <FiShield className="mt-1 shrink-0 text-xl text-sky-300" />
 
                 <div>
-                  <h2 className="font-black">
-                    Share Responsibly
-                  </h2>
+                  <h2 className="font-black">Share Responsibly</h2>
 
                   <p className="mt-1 text-sm leading-6 text-emerald-50/70">
-                    Add accurate preparation, expiry
-                    and pickup details.
+                    Add accurate preparation, expiry and pickup details.
                   </p>
                 </div>
               </div>
@@ -514,13 +453,10 @@ const SignupPageContent = () => {
                 <FiUsers className="mt-1 shrink-0 text-xl text-violet-300" />
 
                 <div>
-                  <h2 className="font-black">
-                    Connect Locally
-                  </h2>
+                  <h2 className="font-black">Connect Locally</h2>
 
                   <p className="mt-1 text-sm leading-6 text-emerald-50/70">
-                    Build respectful connections in
-                    your community.
+                    Build respectful connections in your community.
                   </p>
                 </div>
               </div>
@@ -528,8 +464,8 @@ const SignupPageContent = () => {
           </div>
 
           <p className="relative mt-12 text-xs font-medium text-emerald-100/60">
-            Registration is free and helps keep food
-            posts and requests connected to real users.
+            Registration is free and helps keep food posts and requests
+            connected to real users.
           </p>
         </section>
 
@@ -567,8 +503,7 @@ const SignupPageContent = () => {
               </h1>
 
               <p className="mx-auto mt-3 max-w-md text-sm font-medium leading-7 text-slate-600 dark:text-zinc-400">
-                Register now and sign in to continue
-                to your previous page.
+                Register now and sign in to continue to your previous page.
               </p>
             </div>
 
@@ -577,9 +512,8 @@ const SignupPageContent = () => {
                 <FiArrowRight className="mt-0.5 shrink-0 text-lg" />
 
                 <p className="text-sm font-semibold leading-6">
-                  Your previous page has been saved.
-                  After registration, sign in to return
-                  there.
+                  Your previous page has been saved. After registration, sign in
+                  to return there.
                 </p>
               </div>
             )}
@@ -598,11 +532,7 @@ const SignupPageContent = () => {
                 setErrorMessage("");
               }}
             >
-              <TextField
-                isRequired
-                name="name"
-                type="text"
-              >
+              <TextField isRequired name="name" type="text">
                 <Label className="text-sm font-bold text-slate-700 dark:text-zinc-300">
                   Full Name
                 </Label>
@@ -620,10 +550,7 @@ const SignupPageContent = () => {
                 <FieldError />
               </TextField>
 
-              <TextField
-                name="image"
-                type="url"
-              >
+              <TextField name="image" type="url">
                 <Label className="text-sm font-bold text-slate-700 dark:text-zinc-300">
                   Profile Image URL{" "}
                   <span className="font-medium text-slate-400 dark:text-zinc-600">
@@ -644,11 +571,7 @@ const SignupPageContent = () => {
                 <FieldError />
               </TextField>
 
-              <TextField
-                isRequired
-                name="email"
-                type="email"
-              >
+              <TextField isRequired name="email" type="email">
                 <Label className="text-sm font-bold text-slate-700 dark:text-zinc-300">
                   Email Address
                 </Label>
@@ -688,9 +611,7 @@ const SignupPageContent = () => {
                   />
                 </div>
 
-                <PasswordChecklist
-                  password={password}
-                />
+                <PasswordChecklist password={password} />
 
                 <FieldError />
               </TextField>
@@ -698,9 +619,7 @@ const SignupPageContent = () => {
               <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-2">
                 <Button
                   type="submit"
-                  isDisabled={
-                    isSubmitting || isGoogleLoading
-                  }
+                  isDisabled={isSubmitting || isGoogleLoading}
                   className="group h-12 w-full rounded-2xl bg-linear-to-r from-emerald-700 via-green-600 to-lime-500 font-bold text-white shadow-lg shadow-emerald-600/20 transition-all hover:-translate-y-0.5 hover:shadow-xl dark:from-emerald-500 dark:via-green-500 dark:to-lime-400 dark:text-emerald-950"
                 >
                   {isSubmitting ? (
@@ -718,9 +637,7 @@ const SignupPageContent = () => {
 
                 <Button
                   type="reset"
-                  isDisabled={
-                    isSubmitting || isGoogleLoading
-                  }
+                  isDisabled={isSubmitting || isGoogleLoading}
                   className="h-12 w-full rounded-2xl border border-slate-300 bg-white font-bold text-slate-700 transition-all hover:-translate-y-0.5 hover:border-slate-400 hover:bg-slate-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:bg-zinc-800"
                 >
                   Reset
@@ -740,9 +657,7 @@ const SignupPageContent = () => {
 
             <Button
               type="button"
-              isDisabled={
-                isSubmitting || isGoogleLoading
-              }
+              isDisabled={isSubmitting || isGoogleLoading}
               onPress={handleGoogleSignIn}
               className="h-12 w-full rounded-2xl border border-slate-300 bg-white font-bold text-slate-700 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-emerald-800 dark:hover:bg-emerald-950/25"
             >
@@ -751,7 +666,6 @@ const SignupPageContent = () => {
               ) : (
                 <GrGoogle className="text-lg" />
               )}
-
               Continue with Google
             </Button>
 
@@ -759,10 +673,8 @@ const SignupPageContent = () => {
               <FiCheckCircle className="mt-0.5 shrink-0 text-lg text-emerald-600 dark:text-emerald-400" />
 
               <p className="text-xs font-medium leading-6 text-slate-500 dark:text-zinc-400">
-                After email registration, you will
-                return to the Login page. Login with
-                your new account to continue to your
-                original page.
+                After email registration, you will return to the Login page.
+                Login with your new account to continue to your original page.
               </p>
             </div>
 

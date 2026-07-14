@@ -4,6 +4,7 @@ import Image from "next/image";
 import HowShareBiteWorks from "@/components/home/HowShareBiteWorks";
 import TestimonialsSection from "@/components/home/TestimonialsSection";
 import CommunityImpactStatistics from "@/components/home/CommunityImpactStatistics";
+import VolunteerSection from "@/components/home/VolunteerSection";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <HowShareBiteWorks />
       <TestimonialsSection />
       <CommunityImpactStatistics />
+      <VolunteerSection />
     </div>
   );
 }

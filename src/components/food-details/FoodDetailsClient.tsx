@@ -652,13 +652,13 @@ const FoodDetailsClient: React.FC<
               </p>
 
               {/* Request button */}
-              <Link
+              {/* <Link
                 href={`/request-send/${food._id}`}
                 className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md sm:w-auto"
               >
                 <FiSend />
                 Request For Food
-              </Link>
+              </Link> */}
 
               {/* Main information */}
               <div className="mt-7 grid gap-4 sm:grid-cols-2">
@@ -772,7 +772,19 @@ const FoodDetailsClient: React.FC<
                     food.status
                   )}
                 />
+
+                
               </div>
+              <div className="mt-6 flex justify-center">
+  <Link
+    href={`/request-send/${food._id}`}
+    className="group inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-8 py-3.5 text-sm font-bold text-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-500/25 active:translate-y-0 active:scale-[0.98]"
+  >
+    <FiSend className="transition-transform duration-300 group-hover:-rotate-12 group-hover:translate-x-0.5" />
+
+    Request For Food
+  </Link>
+</div>
             </div>
           </div>
 

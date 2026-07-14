@@ -17,5 +17,6 @@ export async function proxy(request: NextRequest) {
 }
  
 export const config = {
-  matcher: ['/share-food','/my-shared-foods','/my-requests'],
+  matcher: ['/share-food','/my-shared-foods','/my-requests','/request-send/:path',
+    '/incoming-food-requests'],
 }

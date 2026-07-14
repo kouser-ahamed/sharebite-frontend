@@ -11,6 +11,7 @@ import {
   FiAlertCircle,
   FiArrowRight,
   FiClock,
+  FiLoader,
   FiRefreshCw,
   FiTrendingDown,
 } from "react-icons/fi";
@@ -346,16 +347,38 @@ const ExpiringSoonSection = () => {
         {!errorMessage && (
           <div className="mt-12">
             {isLoading ? (
-              <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-6">
-                {Array.from({
-                  length: 4,
-                }).map(
-                  (_, index) => (
-                    <FoodCardSkeleton
-                      key={index}
-                    />
-                  )
-                )}
+              <div>
+                {/* Animated loader */}
+                <div className="mb-8 flex flex-col items-center justify-center text-center">
+                  <div className="relative flex size-16 items-center justify-center">
+                    <div className="absolute inset-0 animate-ping rounded-full bg-orange-400/20" />
+
+                    <div className="relative flex size-14 items-center justify-center rounded-full border border-orange-200 bg-white/90 shadow-lg shadow-orange-500/10 backdrop-blur-md dark:border-orange-900/70 dark:bg-orange-950/40">
+                      <FiLoader className="animate-spin text-2xl text-orange-600 dark:text-orange-400" />
+                    </div>
+                  </div>
+
+                  <p className="mt-4 text-sm font-black text-orange-700 dark:text-orange-300">
+                    Loading urgent foods...
+                  </p>
+
+                  <p className="mt-1 text-xs font-medium text-slate-500 dark:text-zinc-500">
+                    Please wait while we fetch foods with the nearest expiry times
+                  </p>
+                </div>
+
+                {/* Skeleton cards */}
+                <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-6">
+                  {Array.from({
+                    length: 4,
+                  }).map(
+                    (_, index) => (
+                      <FoodCardSkeleton
+                        key={index}
+                      />
+                    )
+                  )}
+                </div>
               </div>
             ) : foods.length > 0 ? (
               <div className="grid grid-cols-1 items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-6">

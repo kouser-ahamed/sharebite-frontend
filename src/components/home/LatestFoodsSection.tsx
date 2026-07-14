@@ -9,6 +9,7 @@ import Link from "next/link";
 import {
   FiAlertCircle,
   FiArrowRight,
+  FiLoader,
   FiRefreshCw,
 } from "react-icons/fi";
 import { MdFoodBank } from "react-icons/md";
@@ -200,19 +201,16 @@ const LatestFoodsSection = () => {
           preserveAspectRatio="none"
           className="h-[88px] w-full sm:h-[105px]"
         >
-          {/* Main wave matching Hero bottom background */}
           <path
             d="M0,0 L1440,0 L1440,22 C1220,65 1030,60 760,30 C520,5 260,80 0,48 Z"
             className="fill-white dark:fill-zinc-950"
           />
 
-          {/* Soft emerald wave below */}
           <path
             d="M0,48 C260,80 520,5 760,30 C1030,60 1220,65 1440,22 L1440,52 C1210,90 1020,84 755,56 C500,28 270,100 0,72 Z"
             className="fill-emerald-100/70 dark:fill-emerald-950/40"
           />
 
-          {/* Fine premium wave line */}
           <path
             d="M0,48 C260,80 520,5 760,30 C1030,60 1220,65 1440,22"
             fill="none"
@@ -298,22 +296,44 @@ const LatestFoodsSection = () => {
             </div>
           )}
 
-        {/* Loading cards */}
+        {/* Loading state */}
         {isLoading && (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-6">
-            {Array.from(
-              {
-                length: 4,
-              },
-              (
-                _item,
-                index,
-              ) => (
-                <FoodCardSkeleton
-                  key={index}
-                />
-              ),
-            )}
+          <div>
+            {/* Main loader */}
+            <div className="mb-8 flex flex-col items-center justify-center">
+              <div className="relative flex size-16 items-center justify-center">
+                <div className="absolute inset-0 animate-ping rounded-full bg-emerald-400/20" />
+
+                <div className="relative flex size-14 items-center justify-center rounded-full border border-emerald-200 bg-white/90 shadow-lg shadow-emerald-500/10 backdrop-blur-md dark:border-emerald-800/60 dark:bg-emerald-950/60">
+                  <FiLoader className="animate-spin text-2xl text-emerald-700 dark:text-emerald-400" />
+                </div>
+              </div>
+
+              <p className="mt-4 text-sm font-bold text-emerald-800 dark:text-emerald-300">
+                Loading latest foods...
+              </p>
+
+              <p className="mt-1 text-xs font-medium text-slate-500 dark:text-zinc-500">
+                Please wait while we fetch recently shared foods
+              </p>
+            </div>
+
+            {/* Loading skeleton cards */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 xl:gap-6">
+              {Array.from(
+                {
+                  length: 4,
+                },
+                (
+                  _item,
+                  index,
+                ) => (
+                  <FoodCardSkeleton
+                    key={index}
+                  />
+                ),
+              )}
+            </div>
           </div>
         )}
 

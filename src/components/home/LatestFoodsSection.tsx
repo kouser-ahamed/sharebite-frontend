@@ -13,8 +13,8 @@ import {
 } from "react-icons/fi";
 import { MdFoodBank } from "react-icons/md";
 
-import FoodCard from "./FoodCard";
-import FoodCardSkeleton from "./FoodCardSkeleton";
+import FoodCard from "../all-foods/FoodCard";
+import FoodCardSkeleton from "../all-foods/FoodCardSkeleton";
 
 import type { Food } from "@/types/food";
 

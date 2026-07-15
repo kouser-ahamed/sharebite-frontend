@@ -12,6 +12,7 @@ import {
   FiMail,
   FiMapPin,
   FiMessageCircle,
+  FiPhone,
   FiShield,
   FiUsers,
 } from "react-icons/fi";
@@ -424,19 +425,41 @@ const Footer = () => {
                   volunteering or platform support.
                 </p>
 
-                <div className="mt-4 flex items-start justify-center gap-2 text-left sm:justify-start">
-                  <FiMapPin className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                <div className="mt-4 space-y-3">
+                  <a
+                    href="mailto:sharebite.help@gmail.com"
+                    className="group flex items-start justify-center gap-2 text-left text-xs font-semibold leading-5 text-slate-500 transition-colors hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400 sm:justify-start"
+                  >
+                    <FiMail className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
 
-                  <p className="text-xs font-semibold leading-5 text-slate-500 dark:text-zinc-400">
-                    Support is available through our Contact page.
-                  </p>
+                    <span className="break-all">
+                      sharebite.help@gmail.com
+                    </span>
+                  </a>
+
+                  <a
+                    href="tel:+8801322699296"
+                    className="group flex items-start justify-center gap-2 text-left text-xs font-semibold leading-5 text-slate-500 transition-colors hover:text-emerald-700 dark:text-zinc-400 dark:hover:text-emerald-400 sm:justify-start"
+                  >
+                    <FiPhone className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+
+                    <span>01322-699296</span>
+                  </a>
+
+                  <div className="flex items-start justify-center gap-2 text-left sm:justify-start">
+                    <FiMapPin className="mt-0.5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+
+                    <p className="text-xs font-semibold leading-5 text-slate-500 dark:text-zinc-400">
+                      Support is available through our Contact page.
+                    </p>
+                  </div>
                 </div>
 
                 <Link
                   href="/contact"
                   className="group mt-5 inline-flex items-center justify-center gap-2 text-sm font-extrabold text-emerald-700 transition-colors hover:text-emerald-800 dark:text-emerald-400 dark:hover:text-emerald-300"
                 >
-                  <FiMail />
+                  <FiMessageCircle />
 
                   Contact Us
 

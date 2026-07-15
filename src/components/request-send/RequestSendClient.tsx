@@ -710,7 +710,7 @@ const RequestSendClient: React.FC<
 
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-4">
         <Link
-          href={`/food-details/${foodId}`}
+          href={`/all-foods/${foodId}`}
           className="mb-5 inline-flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-emerald-600 dark:text-zinc-400 dark:hover:text-emerald-400"
         >
           <FiArrowLeft />

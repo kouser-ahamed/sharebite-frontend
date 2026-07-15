@@ -231,7 +231,7 @@ const MySharedFoodsClient = ({
                       {/* Buttons */}
                       <div className="flex justify-center md:justify-end gap-2">
                         <Link
-                          href={`/food-details/${food._id}`}
+                          href={`/all-foods/${food._id}`}
                           className="p-3 rounded-xl border border-slate-200 dark:border-zinc-700 hover:bg-slate-50 dark:hover:bg-zinc-800 transition"
                         >
                           <FiEye className="text-lg" />
